@@ -31,24 +31,23 @@ public class task7 {
             n += array.length; // приводим отриц. смещение к "5"
         }
         if (n < array.length) {
-            int step = 0;
+            int step = -(array.length - n);
             for (int i = 0; i < array.length; i++) {
                 // "-1", вычитание : "5", прибавление (в зависимости от - выходим ли за массив)
-                step = -(array.length - n);
-                if (i + step >= 0) {
+                arrayResult[i + ((i + step >= 0) ?  step : n )] = array[i];
+
+                /*if (i + step >= 0) {
                     arrayResult[i + step] = array[i];
                 } else {
-                    step = n;
-                    arrayResult[i + step] = array[i];
-                }
+                    arrayResult[i + n] = array[i];
+                }*/
+
             }
         } else {
             System.out.println("Ой, нет. Данные введены некорректно");
         }
-
         System.out.printf("Начальный массив %s%nСмещённый массив %s%n", Arrays.toString(array), Arrays.toString(arrayResult));
     }
-
 }
 
 /** Task 7. Написать метод, которому на вход подается одномерный массив и

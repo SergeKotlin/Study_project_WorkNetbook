@@ -1,6 +1,4 @@
-package Second_2_Part.HW2_2_final;
-
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+package Second_2_Part.HW2_2.HW2_2_final;
 
 public class Main {
 

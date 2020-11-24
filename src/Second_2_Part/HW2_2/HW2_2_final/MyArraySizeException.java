@@ -1,4 +1,4 @@
-package Second_2_Part.HW2_2_final;
+package Second_2_Part.HW2_2.HW2_2_final;
 
 public class MyArraySizeException extends Throwable {
 

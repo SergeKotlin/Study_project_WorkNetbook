@@ -23,7 +23,8 @@ public class Main {
         for (int i = 0; i < numbers.length; i++) {
             MyJob.addInTelephoneDirectory(people[i], numbers[i]);
         }
-        MyJob.getInTelephoneDirectory();
+
+        MyJob.getInTelephoneDirectory("Katrin");
     }
 
     private static Set<String> findingPeople() {

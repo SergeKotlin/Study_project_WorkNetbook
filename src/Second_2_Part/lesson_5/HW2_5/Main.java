@@ -7,11 +7,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        Main pain = new Main();
-//        comparison.startPain();
+        Main pain = new Main();
+        comparison.startPain();
         // 2nd time
         System.out.println("2nd time for pain (1st method)");
-//        comparison.startPain();
+        comparison.startPain();
 
         System.out.println();
 
@@ -61,12 +61,7 @@ public class Main {
         new Thread(() -> comparisonHalf2(arr, arrPart2, " Вычисление 2 части, милисекунды \n(таймер внутри потока)")).start();
 
 //        new Thread(() -> theSpliceThread(arrPart1, arrPart2));
-
-        long splice = System.currentTimeMillis();
-        float[] resultArr = new float[SIZE];
-        System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
-        System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
-        System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
+        theSpliceThread(arrPart1, arrPart2);
 
         printAllAccelerationWorkTime(all);
 //        new Thread(() -> printAllAccelerationWorkTime(all));
@@ -75,13 +70,18 @@ public class Main {
 
 
     private static void theSpliceThread(float[] arrPart1, float[] arrPart2) {
-//        synchronized (comparison) {
-        long splice = System.currentTimeMillis();
-        float[] resultArr = new float[SIZE];
-        System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
-        System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
-        System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
-//        }
+        synchronized (comparison) {
+            long splice = System.currentTimeMillis();
+            float[] resultArr = new float[SIZE];
+            System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
+            System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
+            System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
+//            for (float v : resultArr) {
+//                System.out.print(v + " ");
+//            }
+            System.out.println();
+            System.out.println(resultArr[resultArr.length-1] + " Последний элемент в результате");
+        }
     }
 
     private static void printAllAccelerationWorkTime(long all) {
@@ -99,6 +99,8 @@ public class Main {
                 //засечь время выполнения 2
             }
             System.out.println((System.currentTimeMillis() - calc2) + s);
+            System.out.println(arrPart2[arrPart2.length-1] + " Последний элемент во второй части расчёта " +
+                    "\n(должен совпадать с последним элементом результата)");
         }
     }
 

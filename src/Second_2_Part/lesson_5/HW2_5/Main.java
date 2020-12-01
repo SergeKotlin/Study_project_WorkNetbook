@@ -3,20 +3,23 @@ package Second_2_Part.lesson_5.HW2_5;
 public class Main {
     static final int SIZE = 10000000;
     static final int HALF = SIZE/2;
+    static Main comparison = new Main();
 
     public static void main(String[] args) {
 
-        /*Main pain = new Main();
-        pain.startPain();
+//        Main pain = new Main();
+//        comparison.startPain();
         // 2nd time
         System.out.println("2nd time for pain (1st method)");
-        pain.startPain();
+//        comparison.startPain();
 
-        System.out.println();*/
+        System.out.println();
 
-        Main acceleration = new Main();
-        acceleration.startAcceleration();
-
+//        Main acceleration = new Main();
+        comparison.startAcceleration();
+        /*// 2nd time
+        System.out.println("2nd time for acceleration (2d method)");
+        comparison.startAcceleration();*/
 
     }
 
@@ -32,13 +35,7 @@ public class Main {
         }
         System.out.println( (System.currentTimeMillis() - ini) + " Создание массива и 'Инициализация' единицами, милисекунды");
 
-        long calc = System.currentTimeMillis();
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5)
-                    * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-            //засечь время выполнения 2
-        }
-        System.out.println( (System.currentTimeMillis() - calc) + " Вычисление, милисекунды");
+        comparisonHalf1(arr, arr, " Вычисление, милисекунды");
         System.out.println( (System.currentTimeMillis() - all) + " Всё время работы метода pain, милисекунды");
 
     }
@@ -52,36 +49,76 @@ public class Main {
             v = 1;
         }
 
-        float[] arrPart1 = new float[0];
-        float[] arrPart2 = new float[0];
+        long division= System.currentTimeMillis();
+        float[] arrPart1 = new float[HALF];
+        float[] arrPart2 = new float[HALF];
         System.arraycopy(arr, 0, arrPart1, 0, HALF);
         System.arraycopy(arr, HALF, arrPart2, 0, HALF);
+        System.out.println( (System.currentTimeMillis() - division) + " Разбиение массива, милисекунды");
 
+        new Thread(() -> comparisonHalf1(arr, arrPart1, " Вычисление 1 части, милисекунды \n(таймер внутри потока)")).start();
 
-        long calc1 = System.currentTimeMillis();
-        for (int i = 0; i < arrPart1.length; i++) {
-            arrPart1[i] = (float)(arr[i] * Math.sin(0.2f + i / 5)
-                    * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-            //засечь время выполнения 2
-        }
-        System.out.println( (System.currentTimeMillis() - calc1) + " Вычисление 1 части, милисекунды");
+        new Thread(() -> comparisonHalf2(arr, arrPart2, " Вычисление 2 части, милисекунды \n(таймер внутри потока)")).start();
 
-        long calc2 = System.currentTimeMillis();
-        for (int i = arrPart1.length+1; i < arrPart2.length + arrPart1.length; i++) {
-            arrPart2[i] = (float)(arr[i] * Math.sin(0.2f + i / 5)
-                    * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-            //засечь время выполнения 2
-        }
-        System.out.println( (System.currentTimeMillis() - calc2) + " Вычисление 2 части, милисекунды");
+//        new Thread(() -> theSpliceThread(arrPart1, arrPart2));
 
+        long splice = System.currentTimeMillis();
+        float[] resultArr = new float[SIZE];
+        System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
+        System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
+        System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
 
-        float[] resultArr = new float[0];
-        System.arraycopy(arrPart1, 0, resultArr, 0, HALF);
-        System.arraycopy(arrPart2, 0, resultArr, HALF, HALF);
-
-        System.out.println( (System.currentTimeMillis() - all) + " Всё время работы метода acceleration, милисекунды");
+        printAllAccelerationWorkTime(all);
+//        new Thread(() -> printAllAccelerationWorkTime(all));
 
     }
+
+
+    private static void theSpliceThread(float[] arrPart1, float[] arrPart2) {
+//        synchronized (comparison) {
+        long splice = System.currentTimeMillis();
+        float[] resultArr = new float[SIZE];
+        System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
+        System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
+        System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
+//        }
+    }
+
+    private static void printAllAccelerationWorkTime(long all) {
+        synchronized (comparison) {
+            System.out.println( (System.currentTimeMillis() - all) + " Всё время работы метода acceleration, милисекунды");
+        }
+    }
+
+    private static void comparisonHalf2(float[] arr, float[] arrPart2, String s) {
+        synchronized (comparison) {
+            long calc2 = System.currentTimeMillis();
+            for (int i = 0; i < arrPart2.length; i++) {
+                arrPart2[i] = (float) (arr[i] * Math.sin(0.2f + i / 5)
+                        * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+                //засечь время выполнения 2
+            }
+            System.out.println((System.currentTimeMillis() - calc2) + s);
+        }
+    }
+
+    /*private static void comparisonHalf1(float[] arr, float[] arrPart1, String s) {
+        comparisonHalf2(arr, arrPart1, s);
+    }*/
+
+    private static void comparisonHalf1(float[] arr, float[] arrPart1, String s) {
+        synchronized (comparison) {
+            long calc2 = System.currentTimeMillis();
+            for (int i = 0; i < arrPart1.length; i++) {
+                arrPart1[i] = (float) (arr[i] * Math.sin(0.2f + i / 5)
+                        * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+                //засечь время выполнения 2
+            }
+            System.out.println((System.currentTimeMillis() - calc2) + s);
+        }
+    }
+
+
 
 }
 

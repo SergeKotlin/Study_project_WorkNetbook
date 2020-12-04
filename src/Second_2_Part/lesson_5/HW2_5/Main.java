@@ -1,19 +1,22 @@
 package Second_2_Part.lesson_5.HW2_5;
 
-public class Main {
-    static final int SIZE = 10000000;
+public class Main implements Runnable {
+    static final int SIZE = 100;
     static final int HALF = SIZE/2;
     static Main comparison = new Main();
 
     public static void main(String[] args) {
 
-        Main pain = new Main();
+        /*Main pain = new Main();
         comparison.startPain();
         // 2nd time
         System.out.println("2nd time for pain (1st method)");
         comparison.startPain();
 
         System.out.println();
+
+        System.out.println("Запускаем второй метод");
+        System.out.println();*/
 
 //        Main acceleration = new Main();
         comparison.startAcceleration();
@@ -74,7 +77,7 @@ public class Main {
             long splice = System.currentTimeMillis();
             float[] resultArr = new float[SIZE];
             System.arraycopy(arrPart1, 0, resultArr, 0, HALF-1);
-            System.arraycopy(arrPart2, 0, resultArr, HALF-1, HALF);
+            System.arraycopy(arrPart2, 0, resultArr, HALF, HALF);
             System.out.println( (System.currentTimeMillis() - splice) + " Склейка массива, милисекунды");
 //            for (float v : resultArr) {
 //                System.out.print(v + " ");
@@ -96,6 +99,7 @@ public class Main {
             for (int i = 0; i < arrPart2.length; i++) {
                 arrPart2[i] = (float) (arr[i] * Math.sin(0.2f + i / 5)
                         * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+//                arrPart2[i] = i+1; // Для теста склейки
                 //засечь время выполнения 2
             }
             System.out.println((System.currentTimeMillis() - calc2) + s);
@@ -105,7 +109,7 @@ public class Main {
     }
 
     /*private static void comparisonHalf1(float[] arr, float[] arrPart1, String s) {
-        comparisonHalf2(arr, arrPart1, s);
+        comparisonHalf2(arr, arrPart1, s); // Упрощение - пока лишь усложнение понимания) Обошёлся дублированием кода
     }*/
 
     private static void comparisonHalf1(float[] arr, float[] arrPart1, String s) {
@@ -121,7 +125,10 @@ public class Main {
     }
 
 
+    @Override
+    public void run() {
 
+    }
 }
 
 /** ✓1. Необходимо написать два метода, которые делают следующее:

@@ -93,7 +93,7 @@ public class MyServer {
     public void broadcastMessage(String message, ClientHandler sender, boolean isServerInfoMsg, String DestinationHandler) throws IOException {
         for (ClientHandler client : clients) {
             // Самому себе не отпралвяем, что "мы зашли". Это как бы ясно =|
-            if (client == sender) {
+            if (client.equals(sender)) {
                 continue;
             }
             // Следующий метод многофункциональный - будет отправлять "всё на свете":

@@ -7,7 +7,7 @@ import java.io.IOException;
 public class ServerApp {
     // Отвечает за запуск сервера
 
-    private static final int DEFAULT_PORT = 8189;
+    private static final int DEFAULT_PORT = 8191;
     // А вдруг, тот занят остался.. Но прописано не только здесь. Ещё в Network, как minimum
     // private static final int DEFAULT_PORT = 8190;
 
